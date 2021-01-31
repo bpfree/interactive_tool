@@ -38,7 +38,6 @@ habitat_quality_dir <- "data\\country\\phl\\a_raw_data\\habitat_quality"
 
 ## 1b. setting output directory
 clean_dir <- "data\\country\\phl\\b_clean_data"
-tool_dir <- "data\\country\\phl\\d_tool_data"
 
 ## 1c. inspect the directories
 list.files(habitat_quality_dir)
@@ -103,10 +102,11 @@ siargao_habitat_quality <- siargao %>%
   dplyr::mutate(total_coral = Hard_coral + Soft_coral) %>%
   dplyr::select(total_coral)
 
+# Seagrass data
 seagrass_quality <- siargao %>%
-  dplyr::rename(seagrass = Other) %>%
+  dplyr::rename(total_seagrass = Other) %>%
   dplyr::mutate(iso3 = "PHL") %>%
-  dplyr::select(seagrass, iso3)
+  dplyr::select(total_seagrass, iso3)
 
 ## 4b. Philippines habitat quality mean data
 pu_mean_clean <- pu_mean %>%
@@ -123,7 +123,7 @@ st_write(obj = camotes_habitat_quality, dsn = paste0(clean_dir, "/", "camotes_ha
 st_write(obj = escalantecity_habitat_quality, dsn = paste0(clean_dir, "/", "escalante_city_habitat.shp"), append = F)
 st_write(obj = siargao_habitat_quality, dsn = paste0(clean_dir, "/", "siargao_habitat.shp"), append = F)
 
-st_write(seagrass_quality, dsn = paste0(tool_dir, "/", "seagrass_quality.shp"), append = F)
+st_write(seagrass_quality, dsn = paste0(clean_dir, "/", "habitat_quality_seagrass.shp"), append = F)
 
 write.csv(pu_mean_clean, file = paste0(clean_dir, "/", "pu_mean.csv"))
 

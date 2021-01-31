@@ -35,7 +35,7 @@ tool_dir <- "data\\country\\phl\\d_tool_data"
 ######################################################
 ######################################################
 
-### Habitat quality
+### Coral habitat quality
 ## Load data
 antique_hq <- st_read(dsn = clean_dir, "antique_habitat")
 camotes_hq <- st_read(dsn = clean_dir, "camotes_habitat")
@@ -44,16 +44,25 @@ siargao_hq <- st_read(dsn = clean_dir, "siargao_habitat")
 
 
 ## Clean and prepare data
-habitat_quality <- rbind(antique_hq,
-                         camotes_hq,
-                         escalante_hq,
-                         siargao_hq) %>%
+habitat_quality_coral <- rbind(antique_hq,
+                               camotes_hq,
+                               escalante_hq,
+                               siargao_hq) %>%
   dplyr::mutate(iso3 = "PHL") %>%
   dplyr::relocate(iso3, .after = ttl_crl)
 
 
 ## Export data for analysis or later integration in tool
-st_write(habitat_quality, paste0(tool_dir, "/", "habitat_quality.shp"), append = F)
+st_write(obj = habitat_quality_coral, dsn = paste0(tool_dir, "/", "habitat_quality_coral.shp"), append = F)
+
+### Seagrass habitat quality
+## Load seagrass data
+habitat_quality_seagrass <- st_read(dsn = clean_dir, "habitat_quality_seagrass")
+View(habitat_quality_seagrass)
+
+## Export data for tool
+st_write(obj = habitat_quality_seagrass, dsn = paste0(tool_dir, "/", "habitat_quality_seagrass.shp"), append = F)
+
 
 
 

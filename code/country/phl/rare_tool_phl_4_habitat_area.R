@@ -272,7 +272,7 @@ st_write(obj = phl_coral, dsn = paste0(analyze_dir, "/", "reef.shp"), append = F
 
 st_write(obj = coral_participatory, dsn = paste0(analyze_dir, "/", "coral_participatory.shp"), append = F)
 st_write(obj = mangrove_participatory, dsn = paste0(analyze_dir, "/", "mangrove_participatory.shp"), append = F)
-st_write(obj = seagrass_participatory, dsn = paste0(tool_dir, "/", "seagrass.shp"), append = F)
+st_write(obj = seagrass_participatory, dsn = paste0(analyze_dir, "/", "seagrass.shp"), append = F)
 
 write.csv(antique_habitat_area_clean, file = paste0(clean_dir, "/", "antique_habitat_area.csv"))
 write.csv(camotes_habitat_area_clean, file = paste0(clean_dir, "/", "camotes_habitat_area.csv"))

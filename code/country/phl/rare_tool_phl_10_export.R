@@ -36,22 +36,19 @@ geopackage <- "data\\country\\phl\\phl_interactive_tool.gpkg"
 ######################################################
 
 ### 2. Loading layers for final preparation
-country <- st_read(dsn = tool_dir, "country")
-planning_grid <- st_read(dsn = tool_dir, "planning_grid")
-managed_access_areas <- st_read(dsn = tool_dir, "managed_access_areas")
-reef <- st_read(dsn = tool_dir, "reef")
-mangrove <- st_read(dsn = tool_dir, "mangrove")
-seagrass <- st_read(dsn = tool_dir, "seagrass")
-habitat_quality <- st_read(dsn = tool_dir, "habitat_quality")
-existing_reserves <- st_read(dsn = tool_dir, "existing_reserves")
-connectivity_nodes_export <- st_read(dsn = tool_dir, "connectivity_nodes_export")
-connectivity_nodes_import <- st_read(dsn = tool_dir, "connectivity_nodes_import")
-larval_migration_export <- st_read(dsn = tool_dir, "larval_migration_export")
-larval_migration_import <- st_read(dsn = tool_dir, "larval_migration_import")
-
-reef <- st_make_valid(reef)
-mangrove <- st_make_valid(mangrove)
-seagrass <- st_make_valid(seagrass)
+country <- st_make_valid(st_read(dsn = tool_dir, "country"))
+planning_grid <-  st_make_valid(st_read(dsn = tool_dir, "planning_grid"))
+managed_access_areas <-  st_make_valid(st_read(dsn = tool_dir, "managed_access_areas"))
+reef <-  st_make_valid(st_read(dsn = tool_dir, "reef"))
+mangrove <-  st_make_valid(st_read(dsn = tool_dir, "mangrove"))
+seagrass <-  st_make_valid(st_read(dsn = tool_dir, "seagrass"))
+habitat_quality_coral <-  st_make_valid(st_read(dsn = tool_dir, "habitat_quality_coral"))
+habitat_quality_seagrass <- st_make_valid(st_read(dsn = tool_dir, "habitat_quality_seagrass"))
+existing_reserves <- st_make_valid(st_read(dsn =  tool_dir, "existing_reserves"))
+connectivity_nodes_export <-  st_make_valid(st_read(dsn = tool_dir, "connectivity_nodes_export"))
+connectivity_nodes_import <-  st_make_valid(st_read(dsn = tool_dir, "connectivity_nodes_import"))
+larval_migration_export <-  st_make_valid(st_read(dsn = tool_dir, "larval_migration_export"))
+larval_migration_import <-  st_make_valid(st_read(dsn = tool_dir, "larval_migration_import"))
 
 ######################################################
 ######################################################
@@ -82,8 +79,11 @@ planning_grid <- planning_grid %>%
                 mean_seagrass_cover = mn_sgr_,
                 marxan_frequency = mrxn_fr)
 
-habitat_quality <- habitat_quality %>%
+habitat_quality_coral <- habitat_quality_coral %>%
   dplyr::rename(total_coral = ttl_crl)
+
+habitat_quality_seagrass <- habitat_quality_seagrass %>%
+  dplyr::rename(total_seagrass = ttl_sgr)
 
 existing_reserves <- existing_reserves %>%
   dplyr::rename(reserve_name = rsrv_nm)
@@ -114,7 +114,8 @@ st_write(obj = managed_access_areas, dsn = geopackage, layer = "managed_access_a
 st_write(obj = reef, dsn = geopackage, layer = "reef", append = F)
 st_write(obj = mangrove, dsn = geopackage, layer = "mangrove", append = F)
 st_write(obj = seagrass, dsn = geopackage, layer = "seagrass", append = F)
-st_write(obj = habitat_quality, dsn = geopackage, layer = "habitat_quality", append = F)
+st_write(obj = habitat_quality_coral, dsn = geopackage, layer = "habitat_quality_coral", append = F)
+st_write(obj = habitat_quality_seagrass, dsn = geopackage, layer = "habitat_quality_seagrass", append = F)
 st_write(obj = existing_reserves, dsn = geopackage, layer = "existing_reserves", append = F)
 st_write(obj = connectivity_nodes_export, dsn = geopackage, layer = "connectivity_nodes_export", append = F)
 st_write(obj = connectivity_nodes_import, dsn = geopackage, layer = "connectivity_nodes_import", append = F)

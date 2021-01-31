@@ -367,7 +367,7 @@ larval_migration_export <- rbind(aline_migration_export_classify,
 ## load data
 mangrove <- st_read(dsn = analyze_dir, "mangrove")
 coral <- st_read(dsn = analyze_dir, "reef")
-seagrass <- st_read(dsn = tool_dir, "seagrass")
+seagrass <- st_read(dsn = analyze_dir, "seagrass")
 
 coral_participatory <- st_read(dsn = analyze_dir, "coral_participatory")
 mangrove_participatory <- st_read(dsn = analyze_dir, "mangrove_participatory")
@@ -394,14 +394,26 @@ mangrove_simplified <- mangrove_combine %>%
   dplyr::select(iso3, habitat)
 View(mangrove_simplified)
 
-coral_minus_mangroves <- st_difference(coral_reef_simplified,
-                                       mangrove_simplified)
+seagrass_simplified <- seagrass %>%
+  dplyr::mutate(area = st_area(seagrass)) %>%
+  summarise(area = sum(area)) %>%
+  dplyr::mutate(iso3 = "PHL",
+                habitat = "Seagrass") %>%
+  dplyr::select(iso3, habitat)
+View(seagrass_simplified)
 
-reef <- st_difference(coral_minus_mangroves,
-                      seagrass)
+coral_minus_mangroves <- st_difference(st_make_valid(coral_reef_simplified),
+                                       st_make_valid(mangrove_simplified))
+
+reef <- st_difference(st_make_valid(coral_minus_mangroves), # process takes a long time
+                      st_make_valid(seagrass_simplified))
+
+reef <- reef %>%
+  dplyr::select(iso3,habitat)
 
 mangrove_tool <- st_make_valid(mangrove_simplified)
-coral_reef <- st_make_valid(reef)
+coral_reef <- st_make_valid(reef) # process takes a long time
+seagrass_tool <- st_make_valid(seagrass_simplified)
 
 
 ######################################################
@@ -417,3 +429,8 @@ st_write(obj = larval_migration_export, dsn = paste0(tool_dir, "/", "larval_migr
 
 st_write(obj = coral_reef, dsn = paste0(tool_dir, "/", "reef.shp"), append = F)
 st_write(obj = mangrove_tool, dsn = paste0(tool_dir, "/", "mangrove.shp"), append = F)
+st_write(obj = seagrass_tool, dsn = paste0(tool_dir, "/", "seagrass.shp"), append = F)
+
+st_write(obj = reef, dsn = paste0(tool_dir, "/", "reef1.shp"), append = F)
+st_write(obj = coral_reef_simplified, dsn = paste0(tool_dir, "/", "reef_simplified.shp"), append = F)
+st_write(obj = coral_minus_mangroves, dsn = paste0(tool_dir, "/", "coral_minus_mangrove.shp"), append = F)
