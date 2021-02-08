@@ -36,28 +36,118 @@ clean_dir <- "country_projects\\moz\\data\\b_clean_data"
 analyze_dir <- "country_projects\\moz\\data\\c_analyze_data"
 tool_dir <- "country_projects\\moz\\data\\d_tool_data"
 
+### Set CRS
+crs = 3395 # WGS84 World Mercator
+
 ######################################################
 ######################################################
 
-### Coral habitat quality
+### Coral
 ## Load data
-antique_hq <- st_read(dsn = clean_dir, "antique_habitat")
-camotes_hq <- st_read(dsn = clean_dir, "camotes_habitat")
-escalante_hq <- st_read(dsn = clean_dir, "escalante_city_habitat")
-siargao_hq <- st_read(dsn = clean_dir, "siargao_habitat")
+moz_aca_coral <- st_read(dsn = clean_dir, layer = "moz_aca_coral")
+moz_habitat_coral <- st_read(dsn = clean_dir, layer = "moz_habitat_coral")
+moz_high_res_habitat_coral <- st_read(dsn = clean_dir, layer = "moz_high_res_habitat_coral")
+moz_wcmc_coral <- st_read(dsn = clean_dir, layer = "moz_wcmc_coral")
+
+## check details
+colnames(moz_aca_coral)
+colnames(moz_habitat_coral)
+colnames(moz_high_res_habitat_coral)
+colnames(moz_wcmc_coral)
+
+crs(moz_aca_coral)
+crs(moz_habitat_coral)
+crs(moz_high_res_habitat_coral) # UTM 36S
+crs(moz_wcmc_coral)
+
+test1 <- st_transform(moz_aca_coral, crs)
+test2 <- st_transform(moz_habitat_coral, crs)
+test3 <- st_transform(moz_high_res_habitat_coral, crs)
+test4 <- st_transform(moz_wcmc_coral, crs)
+
+crs(test1)
+crs(test2)
+crs(test3)
+crs(test4)
+
+moz_aca_coral <- moz_aca_coral %>%
+  dplyr::select(-country)
+
+## combine data
+moz_coral <- rbind(moz_aca_coral,
+                   moz_habitat_coral,
+                   moz_high_res_habitat_coral,
+                   moz_wcmc_coral)
+
+### Mangrove
+## Load data
+moz_mangroves <- st_read(dsn = clean_dir, layer = "moz_mangroves")
+moz_high_res_habitat_mangrove <- st_read(dsn = clean_dir, layer = "moz_high_res_habitat_mangrove")
+
+### Seagrass
+## Load data
+moz_aca_seagrass <- st_read(dsn = clean_dir, layer = "moz_aca_seagrass")
+moz_habitat_seagrass <- st_read(dsn = clean_dir, layer = "moz_habitat_seagrass")
+moz_high_res_habitat_seagrass <- st_read(dsn = clean_dir, layer = "moz_high_res_habitat_seagrass")
 
 
-## Clean and prepare data
-habitat_quality_coral <- rbind(antique_hq,
-                               camotes_hq,
-                               escalante_hq,
-                               siargao_hq) %>%
-  dplyr::mutate(iso3 = "PHL") %>%
-  dplyr::relocate(iso3, .after = ttl_crl)
+### Combine datasets
+moz_coral <- rbind(moz_aca_coral,
+                   moz_habitat_coral,
+                   moz_high_res_habitat_coral,
+                   moz_wcmc_coral)
+
+### Functions to reduce features
+## Clean functions (coral, mangrove, seagrass)
+coral_clean_function <- function(data){
+  moz_coral_data <- data %>%
+    dplyr::mutate(area = st_area(data)) %>%
+    summarise(area = sum(area)) %>%
+    dplyr::mutate(iso3 = "MOZ",
+          habitat = "Coral reef") %>%
+    dplyr::select(iso3, habitat)
+  return(moz_coral_data)
+}
+
+mangrove_clean_function <- function(data){
+  moz_mangrove_data <- data %>%
+    dplyr::mutate(area = st_area(data)) %>%
+    summarise(area = sum(area)) %>%
+    dplyr::mutate(iso3 = "MOZ",
+                  habitat = "Mangrove") %>%
+    dplyr::select(iso3, habitat)
+  return(moz_mangrove_data)
+}
+
+seagrass_clean_function <- function(data){
+  moz_seagrass_data <- data %>%
+    dplyr::mutate(area = st_area(data)) %>%
+    summarise(area = sum(area)) %>%
+    dplyr::mutate(iso3 = "MOZ",
+                  habitat = "Seagrass") %>%
+    dplyr::select(iso3, habitat)
+  return(moz_seagrass_data)
+}
+
+## Reducing to single feature to remove overlapping features
+moz_test <- coral_clean_function(moz_habitat_coral)
 
 
-## Export data for analysis or later integration in tool
-st_write(obj = habitat_quality_coral, dsn = paste0(tool_dir, "/", "habitat_quality_coral.shp"), append = F)
+## Export data for analysis (reconciling any areas that )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Seagrass habitat quality
 ## Load seagrass data
