@@ -1,7 +1,0 @@
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
-
-# ignore larger data >100MB, the entire data folder
-data
