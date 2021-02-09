@@ -70,9 +70,6 @@ crs(moz_habitat_coral_wgs84)
 crs(moz_high_res_habitat_coral_wgs84)
 crs(moz_wcmc_coral_wgs84)
 
-moz_aca_coral_wgs84 <- moz_aca_coral_wgs84 %>%
-  dplyr::select(-country)
-
 ## combine data
 moz_coral <- rbind(moz_aca_coral_wgs84,
                    moz_habitat_coral_wgs84,
@@ -84,7 +81,7 @@ levels(as.factor(moz_coral$habitat)) # has Coral, Coral reef, Coral reefs --> ne
 moz_coral <- moz_coral %>%
   dplyr::mutate(habitat = "Coral reef")
 
-levels(as.factor(moz_coral$habitat)) # check to make sure that "Coral reef" is only habitat
+levels(as.factor(moz_coral$habitat)) # check to verify that "Coral reef" is only habitat
 
 
 
@@ -109,13 +106,37 @@ crs(moz_high_res_habitat_mangrove_wgs84)
 moz_mangrove <- rbind(moz_mangroves_wgs84,
                       moz_high_res_habitat_mangrove_wgs84)
 
-levels(as.factor(moz_mangrove$habitat))
+levels(as.factor(moz_mangrove$habitat)) # check to verify that "Mangrove" is the only habitat
+
 
 ### Seagrass
 ## Load data
 moz_aca_seagrass <- st_read(dsn = clean_dir, layer = "moz_aca_seagrass")
 moz_habitat_seagrass <- st_read(dsn = clean_dir, layer = "moz_habitat_seagrass")
 moz_high_res_habitat_seagrass <- st_read(dsn = clean_dir, layer = "moz_high_res_habitat_seagrass")
+
+## check details
+colnames(moz_aca_seagrass)
+colnames(moz_habitat_seagrass)
+colnames(moz_high_res_habitat_seagrass)
+
+crs(moz_aca_seagrass)
+crs(moz_habitat_seagrass)
+crs(moz_high_res_habitat_seagrass)
+
+moz_aca_seagrass_wgs84 <- st_transform(moz_aca_seagrass, crs)
+moz_habitat_seagrass_wgs84 <- st_transform(moz_habitat_seagrass, crs)
+moz_high_res_habitat_seagrass_wgs84 <- st_transform(moz_high_res_habitat_seagrass, crs)
+
+crs(moz_aca_seagrass_wgs84)
+crs(moz_habitat_seagrass_wgs84)
+crs(moz_high_res_habitat_seagrass_wgs84)
+
+moz_seagrass <- rbind(moz_aca_seagrass_wgs84,
+                      moz_habitat_seagrass_wgs84,
+                      moz_high_res_habitat_seagrass_wgs84)
+
+levels(as.factor(moz_seagrass$habitat)) # check to verify that "Mangrove" is the only habitat
 
 
 
@@ -152,7 +173,7 @@ seagrass_clean_function <- function(data){
 }
 
 ## Reducing to single feature to remove overlapping features
-moz_test <- coral_clean_function(moz_habitat_coral)
+moz_coral_reef <- coral_clean_function(moz_coral)
 
 
 ## Export data for analysis (reconciling any areas that )
