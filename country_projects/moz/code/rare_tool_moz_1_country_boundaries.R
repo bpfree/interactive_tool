@@ -75,14 +75,12 @@ crs(land_eez)
 moz <- country %>%
   dplyr::filter(NAME_0 == "Mozambique") %>% # Philippines national boundary
   dplyr::mutate(iso3 = "MOZ") %>%
-  dplyr::rename(country = NAME_0) %>%
-  dplyr::select(country, iso3)
+  dplyr::select(iso3)
 
 moz_land_eez <- land_eez %>%
-  dplyr::filter(ISO_SOV1 == "MOZ") %>%
-  dplyr::select(TERRITORY1,ISO_SOV1) %>%
-  dplyr::rename(country = TERRITORY1,
-                iso3 = ISO_SOV1)
+  dplyr::filter(ISO_SOV1 == "MOZ")%>%
+  dplyr::rename(iso3 = ISO_SOV1) %>%
+  dplyr::select(iso3)
 
 ######################################################
 ######################################################

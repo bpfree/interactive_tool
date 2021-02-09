@@ -60,29 +60,56 @@ crs(moz_habitat_coral)
 crs(moz_high_res_habitat_coral) # UTM 36S
 crs(moz_wcmc_coral)
 
-test1 <- st_transform(moz_aca_coral, crs)
-test2 <- st_transform(moz_habitat_coral, crs)
-test3 <- st_transform(moz_high_res_habitat_coral, crs)
-test4 <- st_transform(moz_wcmc_coral, crs)
+moz_aca_coral_wgs84 <- st_transform(moz_aca_coral, crs)
+moz_habitat_coral_wgs84 <- st_transform(moz_habitat_coral, crs)
+moz_high_res_habitat_coral_wgs84 <- st_transform(moz_high_res_habitat_coral, crs)
+moz_wcmc_coral_wgs84 <- st_transform(moz_wcmc_coral, crs)
 
-crs(test1)
-crs(test2)
-crs(test3)
-crs(test4)
+crs(moz_aca_coral_wgs84)
+crs(moz_habitat_coral_wgs84)
+crs(moz_high_res_habitat_coral_wgs84)
+crs(moz_wcmc_coral_wgs84)
 
-moz_aca_coral <- moz_aca_coral %>%
+moz_aca_coral_wgs84 <- moz_aca_coral_wgs84 %>%
   dplyr::select(-country)
 
 ## combine data
-moz_coral <- rbind(moz_aca_coral,
-                   moz_habitat_coral,
-                   moz_high_res_habitat_coral,
-                   moz_wcmc_coral)
+moz_coral <- rbind(moz_aca_coral_wgs84,
+                   moz_habitat_coral_wgs84,
+                   moz_high_res_habitat_coral_wgs84,
+                   moz_wcmc_coral_wgs84)
+
+levels(as.factor(moz_coral$habitat)) # has Coral, Coral reef, Coral reefs --> need to mutate and rename habitat == "Coral reef"
+
+moz_coral <- moz_coral %>%
+  dplyr::mutate(habitat = "Coral reef")
+
+levels(as.factor(moz_coral$habitat)) # check to make sure that "Coral reef" is only habitat
+
+
 
 ### Mangrove
 ## Load data
 moz_mangroves <- st_read(dsn = clean_dir, layer = "moz_mangroves")
 moz_high_res_habitat_mangrove <- st_read(dsn = clean_dir, layer = "moz_high_res_habitat_mangrove")
+
+## check details
+colnames(moz_mangroves)
+colnames(moz_high_res_habitat_mangrove)
+
+crs(moz_mangroves)
+crs(moz_high_res_habitat_mangrove)
+
+moz_mangroves_wgs84 <- st_transform(moz_mangroves, crs)
+moz_high_res_habitat_mangrove_wgs84 <- st_transform(moz_high_res_habitat_mangrove, crs)
+
+crs(moz_mangroves_wgs84)
+crs(moz_high_res_habitat_mangrove_wgs84)
+
+moz_mangrove <- rbind(moz_mangroves_wgs84,
+                      moz_high_res_habitat_mangrove_wgs84)
+
+levels(as.factor(moz_mangrove$habitat))
 
 ### Seagrass
 ## Load data
@@ -91,11 +118,6 @@ moz_habitat_seagrass <- st_read(dsn = clean_dir, layer = "moz_habitat_seagrass")
 moz_high_res_habitat_seagrass <- st_read(dsn = clean_dir, layer = "moz_high_res_habitat_seagrass")
 
 
-### Combine datasets
-moz_coral <- rbind(moz_aca_coral,
-                   moz_habitat_coral,
-                   moz_high_res_habitat_coral,
-                   moz_wcmc_coral)
 
 ### Functions to reduce features
 ## Clean functions (coral, mangrove, seagrass)

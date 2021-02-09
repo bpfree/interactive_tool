@@ -35,6 +35,9 @@ tool_dir <- "country_projects\\phl\\data\\d_tool_data"
 ## Output directories
 geopackage <- "country_projects\\phl\\data\\phl_interactive_tool.gpkg"
 
+### Set CRS
+crs = 3395 # WGS84 World Mercator
+
 ######################################################
 ######################################################
 
@@ -127,7 +130,26 @@ head(larval_migration_import)
 ######################################################
 ######################################################
 
-### 6. Exporting to the Philippines geopackage
+### 6. Transforming all data into WGS84 World Mercator
+
+country <- st_transform(country, crs)
+planning_grid <- st_transform(planning_grid, crs)
+managed_access_areas <- st_transform(managed_access_areas, crs)
+reef <- st_transform(reef, crs)
+mangrove <- st_transform(mangrove, crs)
+habitat_quality <- st_transform(habitat_quality, crs)
+habitat_quality_coral <- st_transform(habitat_quality_coral, crs)
+habitat_quality_seagrass <- st_transform(habitat_quality_seagrass, crs)
+existing_reserves <- st_transform(existing_reserves, crs)
+connectivity_nodes_export <- st_transform(connectivity_nodes_export, crs)
+connectivity_nodes_import <- st_transform(connectivity_nodes_import, crs)
+larval_migration_export <- st_transform(larval_migration_export, crs)
+larval_migration_import <- st_transform(larval_migration_import, crs)
+
+######################################################
+######################################################
+
+### 7. Exporting to the Philippines geopackage
 st_write(obj = country, dsn = geopackage, layer = "country", append = F)
 st_write(obj = planning_grid, dsn = geopackage, layer = "planning_grid", append = F)
 st_write(obj = managed_access_areas, dsn = geopackage, layer = "managed_access_areas", append = F)

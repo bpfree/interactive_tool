@@ -52,53 +52,53 @@ list.files(larval_dir)
 ### 2. load the data
 
 ## 2f. larval connectivity data
-# Crab
-crb_import <- st_read(dsn = larval_dir, layer = "crb_import")
-crb_export <- st_read(dsn = larval_dir, layer = "crb_export")
+# Scylla serrata
+ssera_import <- st_read(dsn = larval_dir, layer = "ssera_import")
+ssera_export <- st_read(dsn = larval_dir, layer = "ssera_export")
 
-# Emperor
-emp_import <- st_read(dsn = larval_dir, layer = "emp_import")
-emp_export <- st_read(dsn = larval_dir, layer = "emp_export")
+# Lethrunus lentjan
+llent_import <- st_read(dsn = larval_dir, layer = "llent_import")
+llent_export <- st_read(dsn = larval_dir, layer = "llent_export")
 
-# Fus
-fus_import <- st_read(dsn = larval_dir, layer = "fus_import")
-fus_export <- st_read(dsn = larval_dir, layer = "fus_export")
+# Caesio teres
+ctere_import <- st_read(dsn = larval_dir, layer = "ctere_import")
+ctere_export <- st_read(dsn = larval_dir, layer = "ctere_export")
 
-# Grouper
-grp_import <- st_read(dsn = larval_dir, layer = "grp_import")
-grp_export <- st_read(dsn = larval_dir, layer = "grp_export")
+# Epinephelus malabaricus
+emala_import <- st_read(dsn = larval_dir, layer = "emala_import")
+emala_export <- st_read(dsn = larval_dir, layer = "emala_export")
 
-# Parrotfish
-pfs_import <- st_read(dsn = larval_dir, layer = "pfs_import")
-pfs_export <- st_read(dsn = larval_dir, layer = "pfs_export")
+# Scarus ghobban
+sghob_import <- st_read(dsn = larval_dir, layer = "sghob_import")
+sghob_export <- st_read(dsn = larval_dir, layer = "sghob_export")
 
 ######################################################
 ######################################################
 
 ### 3. Inspecting the data
-head(crb_import)
-head(crb_export)
-head(emp_import)
-head(emp_export)
-head(fus_import)
-head(fus_export)
-head(grp_export)
-head(grp_import)
-head(pfs_import)
-head(pfs_export)
+head(ssera_import)
+head(ssera_export)
+head(llent_import)
+head(llent_export)
+head(ctere_import)
+head(ctere_export)
+head(emala_export)
+head(emala_import)
+head(sghob_import)
+head(sghob_export)
 
 
 ## 3a. Checking the CRS
-crs(crb_import)
-crs(crb_export)
-crs(emp_import)
-crs(emp_export)
-crs(fus_import)
-crs(fus_export)
-crs(grp_export)
-crs(grp_import)
-crs(pfs_import)
-crs(pfs_export)
+crs(ssera_import)
+crs(ssera_export)
+crs(llent_import)
+crs(llent_export)
+crs(ctere_import)
+crs(ctere_export)
+crs(emala_export)
+crs(emala_import)
+crs(sghob_import)
+crs(sghob_export)
 
 ######################################################
 ######################################################
@@ -118,20 +118,20 @@ import_clean_function <- function(data){
   return(import_data_cleaned)
 }
 
-crb_import_clean <- import_clean_function(crb_import) %>%
-  dplyr::mutate(species = "Crab") %>%
+ssera_import_clean <- import_clean_function(ssera_import) %>%
+  dplyr::mutate(species = "Scylla serrata") %>%
   dplyr::relocate(species, .after = import)
-emp_import_clean <- import_clean_function(emp_import) %>%
-  dplyr::mutate(species = "Emperor") %>%
+llent_import_clean <- import_clean_function(llent_import) %>%
+  dplyr::mutate(species = "Lethrunus lentjan") %>%
   dplyr::relocate(species, .after = import)
-fus_import_clean <- import_clean_function(fus_import) %>%
-  dplyr::mutate(species = "Fusilier") %>%
+ctere_import_clean <- import_clean_function(ctere_import) %>%
+  dplyr::mutate(species = "Caesio teres") %>%
   dplyr::relocate(species, .after = import)
-grp_import_clean <- import_clean_function(grp_import) %>%
-  dplyr::mutate(species = "Grouper") %>%
+emala_import_clean <- import_clean_function(emala_import) %>%
+  dplyr::mutate(species = "Epinephelus malabaricus") %>%
   dplyr::relocate(species, .after = import)
-pfs_import_clean <- import_clean_function(pfs_import) %>%
-  dplyr::mutate(species = "Parrotfish") %>%
+sghob_import_clean <- import_clean_function(sghob_import) %>%
+  dplyr::mutate(species = "Scarus ghobban") %>%
   dplyr::relocate(species, .after = import)
 
 ## 6a. Export data
@@ -146,37 +146,37 @@ export_clean_function <- function(data){
   return(export_data_cleaned)
 }
 
-crb_export_clean <- export_clean_function(crb_export) %>%
-  dplyr::mutate(species = "Crab") %>%
+ssera_export_clean <- export_clean_function(ssera_export) %>%
+  dplyr::mutate(species = "Scylla serrata") %>%
   dplyr::relocate(species, .after = export)
-emp_export_clean <- export_clean_function(emp_export) %>%
-  dplyr::mutate(species = "Emperor") %>%
+llent_export_clean <- export_clean_function(llent_export) %>%
+  dplyr::mutate(species = "Lethrunus lentjan") %>%
   dplyr::relocate(species, .after = export)
-fus_export_clean <- export_clean_function(fus_export) %>%
-  dplyr::mutate(species = "Fusilier") %>%
+ctere_export_clean <- export_clean_function(ctere_export) %>%
+  dplyr::mutate(species = "Caesio teres") %>%
   dplyr::relocate(species, .after = export)
-grp_export_clean <- export_clean_function(grp_export) %>%
-  dplyr::mutate(species = "Grouper") %>%
+emala_export_clean <- export_clean_function(emala_export) %>%
+  dplyr::mutate(species = "Epinephelus malabaricus") %>%
   dplyr::relocate(species, .after = export)
-pfs_export_clean <- export_clean_function(pfs_export) %>%
-  dplyr::mutate(species = "Parrotfish") %>%
+sghob_export_clean <- export_clean_function(sghob_export) %>%
+  dplyr::mutate(species = "Scarus ghobban") %>%
   dplyr::relocate(species, .after = export)
 
 ######################################################
 ######################################################
 
 ### 5. Saving to output directory
-st_write(obj = crb_import_clean, dsn = paste0(analyze_dir, "/", "crb_import.shp"), append = F)
-st_write(obj = crb_export_clean, dsn = paste0(analyze_dir, "/", "crb_export.shp"), append = F)
+st_write(obj = ssera_import_clean, dsn = paste0(analyze_dir, "/", "ssera_import.shp"), append = F)
+st_write(obj = ssera_export_clean, dsn = paste0(analyze_dir, "/", "ssera_export.shp"), append = F)
 
-st_write(obj = emp_import_clean, dsn = paste0(analyze_dir, "/", "emp_import.shp"), append = F)
-st_write(obj = emp_export_clean, dsn = paste0(analyze_dir, "/", "emp_export.shp"), append = F)
+st_write(obj = llent_import_clean, dsn = paste0(analyze_dir, "/", "llent_import.shp"), append = F)
+st_write(obj = llent_export_clean, dsn = paste0(analyze_dir, "/", "llent_export.shp"), append = F)
 
-st_write(obj = fus_import_clean, dsn = paste0(analyze_dir, "/", "fus_import.shp"), append = F)
-st_write(obj = fus_export_clean, dsn = paste0(analyze_dir, "/", "fus_export.shp"), append = F)
+st_write(obj = ctere_import_clean, dsn = paste0(analyze_dir, "/", "ctere_import.shp"), append = F)
+st_write(obj = ctere_export_clean, dsn = paste0(analyze_dir, "/", "ctere_export.shp"), append = F)
 
-st_write(obj = grp_import_clean, dsn = paste0(analyze_dir, "/", "grp_import.shp"), append = F)
-st_write(obj = grp_export_clean, dsn = paste0(analyze_dir, "/", "grp_export.shp"), append = F)
+st_write(obj = emala_import_clean, dsn = paste0(analyze_dir, "/", "emala_import.shp"), append = F)
+st_write(obj = emala_export_clean, dsn = paste0(analyze_dir, "/", "emala_export.shp"), append = F)
 
-st_write(obj = pfs_import_clean, dsn = paste0(analyze_dir, "/", "pfs_import.shp"), append = F)
-st_write(obj = pfs_export_clean, dsn = paste0(analyze_dir, "/", "pfs_export.shp"), append = F)
+st_write(obj = sghob_import_clean, dsn = paste0(analyze_dir, "/", "sghob_import.shp"), append = F)
+st_write(obj = sghob_export_clean, dsn = paste0(analyze_dir, "/", "sghob_export.shp"), append = F)

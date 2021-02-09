@@ -195,7 +195,7 @@ moz_aca <- st_intersection(st_make_valid(aca_benthic), st_make_valid(land_eez))
 
 moz_aca_coral <- moz_aca %>%
   dplyr::filter(class == "Coral/Algae") %>%
-  dplyr::mutate(class = recode(class, "Coral/Algae" = "Coral")) %>%
+  dplyr::mutate(class = recode(class, "Coral/Algae" = "Coral reef")) %>%
   dplyr::rename(habitat = "class")
 
 moz_aca_seagrass <- moz_aca %>%
