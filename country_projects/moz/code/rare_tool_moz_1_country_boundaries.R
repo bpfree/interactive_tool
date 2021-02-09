@@ -2,8 +2,6 @@
 # Rare Interactive Tool
 #######################
 
-123 # abc
-
 #############
 # Mozambique
 #############
