@@ -54,8 +54,8 @@ list.files(reserve_dir)
 ### 2. load the data
 
 ## 2a. load managed access and reserve data
-phl_ma <- st_read(dsn = managed_access_dir, layer = "phl_proposed_ma")
-phl_reserves <- st_read(dsn = reserve_dir, layer = "phl_reserves_established")
+moz_ma <- st_read(dsn = managed_access_dir, layer = "phl_proposed_ma")
+moz_reserves <- st_read(dsn = reserve_dir, layer = "phl_reserves_established")
 
 ######################################################
 ######################################################
@@ -63,12 +63,12 @@ phl_reserves <- st_read(dsn = reserve_dir, layer = "phl_reserves_established")
 ### 3. Inspect the data (classes, crs, etc.)
 
 ## 3a. Examine the top of the data
-head(phl_ma)
-head(phl_reserves)
+head(moz_ma)
+head(moz_reserves)
 
 ## 3b. Inspect crs and set crs values if needed for later analyses
-crs(phl_ma)
-crs(phl_reserves)
+crs(moz_ma)
+crs(moz_reserves)
 
 
 ######################################################
@@ -77,7 +77,7 @@ crs(phl_reserves)
 ### 4. Cleaning and preparing data
 
 ## 4a. managed access areas
-ma <- phl_ma %>%
+ma <- moz_ma %>%
   dplyr::mutate(iso3 = "PHL", country = "Philippines") %>%
   dplyr::select(iso3, country, MUNNAME, Area_ha, PROVNAME) %>%
   dplyr::mutate(MUNNAME = str_to_title(MUNNAME), PROVNAME = str_to_title(PROVNAME)) %>%
@@ -86,7 +86,7 @@ ma <- phl_ma %>%
   dplyr::rename(region = PROVNAME, maa = MUNNAME, maa_area = Area_ha)
 
 ## 4b. reserves
-reserve <- phl_reserves %>%
+reserve <- moz_reserves %>%
   dplyr::mutate(iso3 = "PHL") %>%
   dplyr::select(MPA_name, Area_ha, iso3) %>%
   dplyr::rename(reserve_name = MPA_name, area_ha = Area_ha)

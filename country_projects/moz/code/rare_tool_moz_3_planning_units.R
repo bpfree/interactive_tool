@@ -122,8 +122,3 @@ levels(x)
 
 ### 8. Saving to compiled directory
 st_write(obj = phl_pu, dsn = paste0(clean_dir, "/", "phl_pu.shp"), append = F)
-
-# st_write(obj = antique_pu_clean, dsn = paste0(clean_dir, "/", "antique_pu.shp"), append = F)
-# st_write(obj = cebu_pu_clean, dsn = paste0(clean_dir, "/", "cebu_pu.shp"), append = F)
-# st_write(obj = negros_occidental_pu_clean, dsn = paste0(clean_dir, "/", "negros_occidental_pu.shp"), append = F)
-# st_write(obj = surigao_del_norte_pu_clean, dsn = paste0(clean_dir, "/", "surigao_del_norte_pu.shp"), append = F)
