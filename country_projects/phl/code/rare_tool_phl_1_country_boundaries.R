@@ -38,10 +38,10 @@ pacman::p_load(berryFunctions,dplyr,raster,rgdal,sf,sp,stringr)
 
 ## 1a. Set the directories where the raw country and EEZ data are currently stored for each 
 country_dir <- "country_projects\\phl\\data\\a_raw_data\\country\\gadm36_levels.gpkg"
-eez_dir <- "country_projects\\phldata\\a_raw_data\\country"
+eez_dir <- "country_projects\\phl\\data\\a_raw_data\\country"
 
 ## 1b. setting output directory
-clean_dir <- "country_projects\\phldata\\\\b_clean_data"
+clean_dir <- "country_projects\\phl\\data\\b_clean_data"
 tool_dir <-"country_projects\\phl\\data\\d_tool_data"
 
 ## 1c. inspect the directories

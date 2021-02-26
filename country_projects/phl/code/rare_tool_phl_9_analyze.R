@@ -426,21 +426,37 @@ coral_minus_mangroves <- st_difference(st_make_valid(coral_reef_simplified),
 ### 5. Planning grid managed access area percentages
 
 ## load the data
+# Marxan frequency data across all interested managed access areas
+phl_maa_marxan <- read.csv(paste(analyze_dir, "phl_marxan.csv", sep= "/"), as.is = T)
+View(phl_maa_marxan)
+
 # original planning grid data
-planning_units <- st_read(dsn = analyze_dir, "planning_grid")
+planning_units <- st_read(dsn = analyze_dir, "planning_grid") %>%
+  dplyr::select(-mrxn_fr) # remove old marxan frequencies to be able to add the new data later
 View(planning_units)
+
+levels(as.factor(maa_names$maa))
 
 # key for planning unit ID and managed access area names
 maa_names <- read.csv(paste(analyze_dir, "planning_grid_ma_region.csv", sep= "/"), as.is = T)
 View(maa_names)
+
+# See how each managed access area matchs with the region of interest
+grouping <- maa_names %>%
+  group_by(maa) %>%
+  summarise(region = first(region))
 
 ## combine the data based on puid, region, and maa names
 # first need to combine the original planning grid data (which has puid and region data but not maa nor areas) with table that has puid, region, and maa names
 pu_maa_names <- merge(planning_units, maa_names, by.x = c("region", "puid"), by.y = c("region", "puid"))
 View(pu_maa_names) # sf now has maa name
 
+pu_marxan <- merge(pu_maa_names, phl_maa_marxan, by.x = c("region", "puid"), by.y = c("region", "puid")) %>%
+  dplyr::rename(maa = maa.x) %>%
+  dplyr::select(-X, -maa.y)
+
 # summed habitat area per managed access area data
-maa_habitat <- pu_maa_names %>%
+maa_habitat <- pu_marxan %>%
   group_by(maa,region) %>%
   summarise(coral_maa = sum(ref_r_h),
             mangrove_maa = sum(mngrv__),
@@ -452,14 +468,13 @@ st_geometry(maa_habitat) <- NULL # need to make data frame for allowing to be jo
 class(maa_habitat)
 
 # now can join original managed access data with has area values with the planning grid data using the maa names
-pu_ma_area <- left_join(pu_maa_names,maa_habitat) %>%
+pu_ma_area <- left_join(pu_marxan,maa_habitat) %>%
   dplyr::rename(coral_puid_ha = ref_r_h,
                 mangrove_puid_ha = mngrv__,
                 seagrass_puid_ha = sgrss__,
                 total_puid_ha = ttl_r_h,
                 mean_coral_cover = mn_crl_,
-                mean_seagrass_cover = mn_sgr_,
-                marxan_frequency = mrxn_fr) %>%
+                mean_seagrass_cover = mn_sgr_) %>%
   dplyr::mutate(coral_maa_pct = (coral_puid_ha / coral_maa) * 100,
                 mangrove_maa_pct = (mangrove_puid_ha / mangrove_maa) * 100,
                 seagrass_maa_pct = (seagrass_puid_ha / seagrass_maa) * 100,

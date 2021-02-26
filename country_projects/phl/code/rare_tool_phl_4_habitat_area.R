@@ -37,18 +37,18 @@ pacman::p_load(berryFunctions,dplyr,raster,rgdal,sf,sp,stringr)
 ## to setting up many directories in the code
 
 ## 1a. Set the directories where the raw habitat area data are currently stored
-eez_dir <- "data\\b_clean_data"
+eez_dir <- "country_projects\\phl\\data\\b_clean_data"
 
-habitat_area_dir <- "data\\a_raw_data\\habitat_area"
+habitat_area_dir <- "country_projects\\phl\\data\\a_raw_data\\habitat_area"
 
-mangrove_dir <- "data\\a_raw_data\\mangrove"
-coral_dir <- "data\\a_raw_data\\coral_reef"
-seagrass_dir <- "data\\a_raw_data\\seagrass"
+mangrove_dir <- "country_projects\\phl\\data\\a_raw_data\\mangrove"
+coral_dir <- "country_projects\\phl\\data\\a_raw_data\\coral_reef"
+seagrass_dir <- "country_projects\\phl\\data\\a_raw_data\\seagrass"
 
 ## 1b. setting output directories
-clean_dir <- "data\\b_clean_data"
-analyze_dir <- "data\\c_analyze_data"
-tool_dir <-"data\\d_tool_data"
+clean_dir <- "country_projects\\phl\\data\\b_clean_data"
+analyze_dir <- "country_projects\\phl\\data\\c_analyze_data"
+tool_dir <- "country_projects\\phl\\data\\d_y_data"
 
 
 ## 1c. inspect the directories

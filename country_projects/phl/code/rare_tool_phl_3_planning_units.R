@@ -44,6 +44,7 @@ clean_dir <- "country_projects\\phl\\data\\b_clean_data"
 
 ## 1c. inspect the directory
 list.files(pu_dir)
+list.files(marxan_dir)
 
 ######################################################
 ######################################################
@@ -55,7 +56,6 @@ antique_pu <- st_read(dsn = pu_dir, layer = "antique_pu")
 cebu_pu <- st_read(dsn = pu_dir, layer = "cebu_pu")
 negros_occidental_pu <- st_read(dsn = pu_dir, layer = "negros_occidental_pu")
 surigao_del_norte_pu <- st_read(dsn = pu_dir, layer = "surigao_del_norte_pu")
-
 
 ######################################################
 ######################################################
