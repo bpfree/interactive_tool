@@ -435,13 +435,13 @@ planning_units <- st_read(dsn = analyze_dir, "planning_grid") %>%
   dplyr::select(-mrxn_fr) # remove old marxan frequencies to be able to add the new data later
 View(planning_units)
 
-levels(as.factor(maa_names$maa))
-
 # key for planning unit ID and managed access area names
 maa_names <- read.csv(paste(analyze_dir, "planning_grid_ma_region.csv", sep= "/"), as.is = T)
 View(maa_names)
 
-# See how each managed access area matchs with the region of interest
+levels(as.factor(maa_names$maa))
+
+# See how each managed access area matches with the region of interest
 grouping <- maa_names %>%
   group_by(maa) %>%
   summarise(region = first(region))
